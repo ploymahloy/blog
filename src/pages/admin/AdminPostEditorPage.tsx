@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { AdminShell } from '../../components/admin/AdminShell';
 import { BlockBuilder } from '../../components/admin/BlockBuilder';
-import { useContent } from '../../hooks/useContent';
-import { fetchPostById, isValidSlug, upsertBlogPost } from '../../lib/content';
+import { fetchPostById } from '../../lib/content';
 import type { ArticleBlock, BlogPost } from '../../types/content';
+import {
+	buildPostFromForm,
+	getAdminPostPreviewPath,
+	isAdminPostDraftState,
+	validatePostDraft
+} from './admin-post-state';
 
 const inputClassName =
 	'w-full rounded-lg bg-surface px-3 py-2 text-sm text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent';
@@ -24,16 +29,30 @@ export function AdminPostEditorPage() {
 	const { id: routeId } = useParams<{ id: string }>();
 	const isNew = routeId === 'new';
 	const navigate = useNavigate();
-	const { reload } = useContent();
+	const location = useLocation();
 
 	const [post, setPost] = useState<BlogPost>(emptyPost);
 	const [tagsText, setTagsText] = useState('');
 	const [isLoading, setIsLoading] = useState(!isNew);
 	const [error, setError] = useState<string | null>(null);
-	const [isSaving, setIsSaving] = useState(false);
+	const [isPreviewing, setIsPreviewing] = useState(false);
+
+	useEffect(() => {
+		const draftState = isAdminPostDraftState(location.state) ? location.state : null;
+		if (!draftState) return;
+
+		const matchesRoute = isNew || draftState.post.id === routeId;
+		if (!matchesRoute) return;
+
+		setPost(draftState.post);
+		setTagsText(draftState.post.tags.join(', '));
+		setIsLoading(false);
+		setError(null);
+	}, [isNew, location.state, routeId]);
 
 	useEffect(() => {
 		if (isNew) return;
+		if (isAdminPostDraftState(location.state)) return;
 
 		const load = async () => {
 			if (!routeId) return;
@@ -55,38 +74,24 @@ export function AdminPostEditorPage() {
 		};
 
 		void load();
-	}, [isNew, routeId]);
+	}, [isNew, location.state, routeId]);
 
-	const handleSave = async (event: React.FormEvent) => {
+	const handlePreview = (event: React.FormEvent) => {
 		event.preventDefault();
 		setError(null);
 
-		const slug = post.id.trim();
-		if (!slug || !isValidSlug(slug)) {
-			setError('ID must be a kebab-case slug.');
+		const builtPost = buildPostFromForm(post, tagsText);
+		const validationError = validatePostDraft(builtPost);
+		if (validationError) {
+			setError(validationError);
 			return;
 		}
 
-		if (!post.title.trim() || !post.summary.trim() || !post.readTime.trim()) {
-			setError('Title, summary, and read time are required.');
-			return;
-		}
+		if (!routeId) return;
 
-		const tags = tagsText
-			.split(',')
-			.map(tag => tag.trim())
-			.filter(Boolean);
-
-		setIsSaving(true);
-		try {
-			await upsertBlogPost({ ...post, id: slug, tags, content: post.content });
-			await reload();
-			navigate('/admin/posts');
-		} catch (saveError) {
-			setError(saveError instanceof Error ? saveError.message : 'Failed to save post');
-		} finally {
-			setIsSaving(false);
-		}
+		setIsPreviewing(true);
+		navigate(getAdminPostPreviewPath(routeId), { state: { post: builtPost } });
+		setIsPreviewing(false);
 	};
 
 	const shellTitle = isNew ? 'New post' : 'Edit post';
@@ -102,7 +107,7 @@ export function AdminPostEditorPage() {
 
 	return (
 		<AdminShell title={shellTitle} backLink={postsBackLink}>
-			<form onSubmit={event => void handleSave(event)} className='space-y-6 rounded-xl bg-panel p-6'>
+			<form onSubmit={handlePreview} className='space-y-6 rounded-xl bg-panel p-6'>
 				<div className='grid gap-4 sm:grid-cols-2'>
 					<div>
 						<label htmlFor='post-id' className='mb-1 block text-sm text-text-secondary'>
@@ -194,9 +199,9 @@ export function AdminPostEditorPage() {
 
 				<button
 					type='submit'
-					disabled={isSaving}
+					disabled={isPreviewing}
 					className='rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-soft disabled:opacity-50'>
-					{isSaving ? 'Saving…' : 'Save post'}
+					{isPreviewing ? 'Opening preview…' : 'Preview'}
 				</button>
 			</form>
 		</AdminShell>

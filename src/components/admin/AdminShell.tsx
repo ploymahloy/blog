@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth';
 
@@ -10,12 +10,20 @@ const navClassName = ({ isActive }: { isActive: boolean }) =>
 interface AdminShellProps {
 	children: React.ReactNode;
 	title: string;
-	backLink?: { to: string; label: string };
+	backLink?: { to: string; label: string; state?: unknown };
+}
+
+function getViewSitePath(pathname: string): string {
+	if (pathname.startsWith('/admin/posts')) return '/blog';
+	if (pathname.startsWith('/admin/projects')) return '/';
+	return '/';
 }
 
 export function AdminShell({ children, title, backLink }: AdminShellProps) {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const { signOut, user } = useAuth();
+	const viewSitePath = getViewSitePath(location.pathname);
 
 	const handleSignOut = async () => {
 		await signOut();
@@ -57,10 +65,10 @@ export function AdminShell({ children, title, backLink }: AdminShellProps) {
 			</div>
 			<div className='mt-8'>
 				{backLink ?
-					<Link to={backLink.to} className='text-sm text-accent hover:text-accent-soft'>
+					<Link to={backLink.to} state={backLink.state} className='text-sm text-accent hover:text-accent-soft'>
 						{backLink.label}
 					</Link>
-				:	<Link to='/' className='text-sm text-accent hover:text-accent-soft'>
+				:	<Link to={viewSitePath} className='text-sm text-accent hover:text-accent-soft'>
 						← View site
 					</Link>
 				}

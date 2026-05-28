@@ -9,6 +9,7 @@ import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 import { AdminMfaPage } from './pages/admin/AdminMfaPage';
 import { AdminPostEditorPage } from './pages/admin/AdminPostEditorPage';
+import { AdminPostPreviewPage } from './pages/admin/AdminPostPreviewPage';
 import { AdminPostsPage } from './pages/admin/AdminPostsPage';
 import { AdminProjectsPage } from './pages/admin/AdminProjectsPage';
 import { BlogPage } from './pages/Blog';
@@ -42,6 +43,7 @@ export function App() {
 							<Route index element={<AdminDashboardPage />} />
 							<Route path='projects' element={<AdminProjectsPage />} />
 							<Route path='posts' element={<AdminPostsPage />} />
+							<Route path='posts/:id/preview' element={<AdminPostPreviewPage />} />
 							<Route path='posts/:id' element={<AdminPostEditorPage />} />
 							<Route path='mfa' element={<AdminMfaPage />} />
 						</Route>
