@@ -1,11 +1,13 @@
 import { ProjectCard } from '../components/Card';
+import { SocialLinks } from '../components/SocialLinks';
 import { projects } from '../data/projects';
 
 export function HomePage() {
 	return (
 		<section className='mx-auto w-full max-w-6xl px-4 py-10 md:px-6'>
 			<p className='text-5xl font-semibold text-center text-text-primary md:text-7xl'>Patrick Mahloy</p>
-			<p className='text-sm uppercase tracking-wide text-accent text-center'>Software Engineer</p>
+			<p className='mt-1 text-xl uppercase tracking-wide text-accent text-center'>Software Engineer</p>
+			<SocialLinks className='mt-3' />
 			<p className='my-4 text-text-secondary text-center whitespace-pre-line'>
 				&quot;Born to ship...forced to estimate story points.&quot;
 			</p>
