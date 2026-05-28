@@ -56,6 +56,19 @@ export function BlogPostPage() {
 							);
 						}
 
+						if (block.type === 'link') {
+							return (
+								<a
+									key={`${post.id}-link-${index}`}
+									href={block.content}
+									target='_blank'
+									rel='noreferrer'
+									className='inline-flex text-accent underline underline-offset-4 transition-colors hover:text-accent-soft'>
+									{block.content}
+								</a>
+							);
+						}
+
 						return <CodeBlock key={`${post.id}-code-${index}`} code={block.code} language={block.language} />;
 					})}
 				</div>

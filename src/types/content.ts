@@ -29,6 +29,11 @@ export interface ListArticleBlock {
   items: string[];
 }
 
+export interface LinkArticleBlock {
+  type: "link";
+  content: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -43,4 +48,5 @@ export type ArticleBlock =
   | ParagraphArticleBlock
   | HeadingArticleBlock
   | ListArticleBlock
+  | LinkArticleBlock
   | CodeArticleBlock;
