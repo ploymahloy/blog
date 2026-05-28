@@ -9,7 +9,9 @@ export function HomePage() {
 			<p className='my-4 text-text-secondary text-center whitespace-pre-line'>
 				&quot;Born to ship...forced to estimate story points.&quot;
 			</p>
-			<h1 className='mt-2 text-3xl font-semibold text-text-primary md:text-4xl'>Featured Projects</h1>
+			<h1 className='mt-4 md:mt-2 text-3xl font-semibold text-text-primary md:text-4xl text-center md:text-left'>
+				Featured Projects
+			</h1>
 			<div className='mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3'>
 				{projects.map(project => (
 					<ProjectCard key={project.id} project={project} />

@@ -1,4 +1,4 @@
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import { CodeBlock } from '../components/CodeBlock';
 import { TagChip } from '../components/Tag';
@@ -14,11 +14,7 @@ export function BlogPostPage() {
 
 	return (
 		<section className='mx-auto w-full max-w-4xl px-4 py-10 sm:px-6'>
-			<Link to='/blog' className='text-sm text-accent transition-colors hover:text-accent-soft'>
-				Back to blog
-			</Link>
-
-			<article className='mt-6 rounded-xl bg-panel p-6 shadow-soft'>
+			<article className='rounded-xl bg-panel p-6 shadow-soft'>
 				<header>
 					<h1 className='text-3xl font-semibold text-text-primary'>{post.title}</h1>
 					<p className='mt-2 text-sm text-text-muted'>

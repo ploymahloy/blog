@@ -14,7 +14,6 @@ export function BlogPage() {
 	const [activeTag, setActiveTag] = useState<string | null>(null);
 
 	const availableTags = useMemo(() => [...new Set(posts.flatMap(post => post.tags))].sort(), []);
-
 	const normalizedQuery = query.trim().toLowerCase();
 
 	const filteredPosts = useMemo(() => {
@@ -41,8 +40,8 @@ export function BlogPage() {
 
 	return (
 		<section className='mx-auto w-full max-w-6xl px-4 py-10 sm:px-6'>
-			<p className='text-sm uppercase tracking-wide text-accent'>Engineering Blog</p>
-			<h1 className='mt-2 text-3xl font-semibold text-text-primary sm:text-4xl'>Posts</h1>
+			<p className='text-sm uppercase tracking-wide text-accent text-center md:text-left'>Engineering Blog</p>
+			<h1 className='mt-2 text-3xl font-semibold text-text-primary sm:text-4xl text-center md:text-left'>Posts</h1>
 			<div className='mt-8 rounded-xl bg-panel p-4'>
 				<label htmlFor='blog-search' className='mb-2 block text-sm text-text-secondary'>
 					Search by title or tag
@@ -62,14 +61,14 @@ export function BlogPage() {
 				</div>
 			</div>
 
-			<div className='mt-8 space-y-6'>
+			<div className='mt-5 sm:columns-2 sm:[column-gap:1.25rem] lg:columns-3'>
 				{filteredPosts.length === 0 ?
 					<p className='rounded-xl bg-panel p-6 text-text-secondary'>No posts matched your search.</p>
 				:	filteredPosts.map(post => (
 						<Link
 							key={post.id}
 							to={`/blog/${post.id}`}
-							className='block rounded-xl bg-panel p-6 shadow-soft transition-colors hover:bg-panel-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'>
+							className='mb-6 block break-inside-avoid rounded-xl bg-panel p-6 shadow-soft transition-colors hover:bg-panel-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'>
 							<article>
 								<header>
 									<h2 className='text-2xl font-semibold text-text-primary'>{post.title}</h2>
