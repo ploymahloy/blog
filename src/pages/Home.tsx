@@ -1,8 +1,10 @@
 import { ProjectCard } from '../components/Card';
 import { SocialLinks } from '../components/SocialLinks';
-import { projects } from '../data/projects';
+import { useContent } from '../hooks/useContent';
 
 export function HomePage() {
+	const { projects } = useContent();
+
 	return (
 		<section className='mx-auto w-full max-w-6xl px-4 py-10 md:px-6'>
 			<p className='text-5xl font-semibold text-center text-text-primary md:text-7xl'>Patrick Mahloy</p>

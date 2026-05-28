@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { TagChip } from '../components/Tag';
-import { posts } from '../data/posts';
+import { useContent } from '../hooks/useContent';
 import type { BlogPost } from '../types/content';
 
 function sortByNewest(postA: BlogPost, postB: BlogPost) {
@@ -10,10 +10,11 @@ function sortByNewest(postA: BlogPost, postB: BlogPost) {
 }
 
 export function BlogPage() {
+	const { posts } = useContent();
 	const [query, setQuery] = useState('');
 	const [activeTag, setActiveTag] = useState<string | null>(null);
 
-	const availableTags = useMemo(() => [...new Set(posts.flatMap(post => post.tags))].sort(), []);
+	const availableTags = useMemo(() => [...new Set(posts.flatMap(post => post.tags))].sort(), [posts]);
 	const normalizedQuery = query.trim().toLowerCase();
 
 	const filteredPosts = useMemo(() => {
@@ -32,7 +33,7 @@ export function BlogPage() {
 				return searchableText.includes(normalizedQuery);
 			})
 			.sort(sortByNewest);
-	}, [activeTag, normalizedQuery]);
+	}, [posts, activeTag, normalizedQuery]);
 
 	const toggleTag = (tag: string) => {
 		setActiveTag(currentTag => (currentTag === tag ? null : tag));

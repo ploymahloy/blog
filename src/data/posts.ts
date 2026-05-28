@@ -1,78 +1,80 @@
-import type { BlogPost } from "../types/content";
+import type { BlogPost } from '../types/content';
 
 export const posts: BlogPost[] = [
-  {
-    id: "designing-resilient-job-workers",
-    title: "Designing Resilient Job Workers in Node.js",
-    summary:
-      "How to keep background workers reliable when retries, idempotency, and observability all matter.",
-    publishedAt: "2026-04-19",
-    readTime: "6 min read",
-    tags: ["Node.js", "Reliability", "Backend", "Queues"],
-    content: [
-      {
-        type: "paragraph",
-        content:
-          "A worker that retries without safeguards can make an outage worse. The foundation is idempotency + bounded retries + good telemetry.",
-      },
-      {
-        type: "heading",
-        content: "Idempotency first",
-      },
-      {
-        type: "paragraph",
-        content:
-          "Persist an idempotency key before processing so duplicate deliveries become safe no-ops.",
-      },
-      {
-        type: "code",
-        language: "ts",
-        code: `export async function processPayment(job: PaymentJob): Promise<void> {
-  const wasHandled = await idempotencyStore.exists(job.idempotencyKey);
-  if (wasHandled) return;
-
-  await idempotencyStore.begin(job.idempotencyKey);
-  try {
-    await payments.charge(job.payload);
-    await idempotencyStore.complete(job.idempotencyKey);
-  } catch (error) {
-    await idempotencyStore.fail(job.idempotencyKey, String(error));
-    throw error;
-  }
-}`,
-      },
-      {
-        type: "list",
-        items: [
-          "Use exponential backoff and max attempts.",
-          "Move poison jobs to a dead-letter queue.",
-          "Tag logs/metrics with queue, worker, and retry count.",
-        ],
-      },
-    ],
-  },
-  {
-    id: "practical-react-rendering-choices",
-    title: "Practical React Rendering Choices",
-    summary:
-      "A framework for deciding between server rendering, client rendering, and static pages in product teams.",
-    publishedAt: "2026-03-01",
-    readTime: "5 min read",
-    tags: ["React", "Frontend", "Performance", "Architecture"],
-    content: [
-      {
-        type: "paragraph",
-        content:
-          "Rendering is a product decision before it is a framework decision. Start with user-perceived latency and interaction needs.",
-      },
-      {
-        type: "heading",
-        content: "Decision matrix",
-      },
-      {
-        type: "code",
-        language: "tsx",
-        code: `type RenderMode = "server" | "client" | "static";
+	{
+		id: 'designing-resilient-job-workers',
+		title: 'Spinning Up Your First EC2 Instance',
+		summary: 'How to spin up your first EC2 instance and get it running.',
+		publishedAt: '2026-05-28',
+		readTime: '6 min read',
+		tags: ['AWS', 'EC2', 'Linux', 'SSH'],
+		content: [
+			{
+				type: 'paragraph',
+				content:
+					'So you want to host your API server on AWS? Follow along as I walk you through the process of spinning up your first EC2 instance.'
+			},
+			{
+				type: 'heading',
+				content: 'Brace yourself'
+			},
+			{
+				type: 'paragraph',
+				content:
+					"Nothing is intuitive in AWS, and the provided instructions/docs aren't exactly helpful. There are a lof of steps and you will need to pay attention to every detail. I will be launching an Amazon Linux EC2 instance. Reference steps 1 and 2 below:"
+			},
+			{
+				type: 'link',
+				content: 'https://aws.amazon.com/ec2/getting-started/'
+			},
+			{
+				type: 'paragraph',
+				content:
+					'Step 3 implies that you can optionally add a security group to the instance, but make no mistake: you MUST add a security group in order to SSH into the instance. See details below:'
+			},
+			{
+				type: 'code',
+				language: 'bash',
+				code: `ec2 instance security group deets
+        `
+			},
+			{
+				type: 'heading',
+				content: 'SSH into the instance'
+			},
+			{
+				type: 'paragraph',
+				content:
+					'In order to SSH into the instance, you will need a `.pem` file. This file is used to authenticate your SSH connection to the instance. You can create a new `.pem` file by going to Page > Link > Here > There'
+			},
+			{
+				type: 'code',
+				language: 'bash',
+				code: `ssh -i ~/.ssh/your-key.pem ec2-user@your-instance-public-ip`
+			}
+		]
+	},
+	{
+		id: 'practical-react-rendering-choices',
+		title: 'Practical React Rendering Choices',
+		summary: 'A framework for deciding between server rendering, client rendering, and static pages in product teams.',
+		publishedAt: '2026-03-01',
+		readTime: '5 min read',
+		tags: ['React', 'Frontend', 'Performance', 'Architecture'],
+		content: [
+			{
+				type: 'paragraph',
+				content:
+					'Rendering is a product decision before it is a framework decision. Start with user-perceived latency and interaction needs.'
+			},
+			{
+				type: 'heading',
+				content: 'Decision matrix'
+			},
+			{
+				type: 'code',
+				language: 'tsx',
+				code: `type RenderMode = "server" | "client" | "static";
 
 export function chooseRenderMode(args: {
   isPersonalized: boolean;
@@ -82,37 +84,35 @@ export function chooseRenderMode(args: {
   if (args.needsRealtimeInteraction) return "client";
   if (args.isPersonalized || args.updateFrequency === "high") return "server";
   return "static";
-}`,
-      },
-      {
-        type: "paragraph",
-        content:
-          "The win is consistency: teams stop arguing from preference and decide from constraints.",
-      },
-    ],
-  },
-  {
-    id: "shipping-safe-database-migrations",
-    title: "Shipping Safe Database Migrations",
-    summary:
-      "A zero-downtime migration flow that scales from small teams to high-traffic production systems.",
-    publishedAt: "2026-01-14",
-    readTime: "7 min read",
-    tags: ["Databases", "DevOps", "PostgreSQL", "Migrations"],
-    content: [
-      {
-        type: "paragraph",
-        content:
-          "Most migration incidents come from tight coupling between schema and app deploy timing. Expand-contract removes that risk.",
-      },
-      {
-        type: "heading",
-        content: "Expand then contract",
-      },
-      {
-        type: "code",
-        language: "sql",
-        code: `-- expand
+}`
+			},
+			{
+				type: 'paragraph',
+				content: 'The win is consistency: teams stop arguing from preference and decide from constraints.'
+			}
+		]
+	},
+	{
+		id: 'shipping-safe-database-migrations',
+		title: 'Shipping Safe Database Migrations',
+		summary: 'A zero-downtime migration flow that scales from small teams to high-traffic production systems.',
+		publishedAt: '2026-01-14',
+		readTime: '7 min read',
+		tags: ['Databases', 'DevOps', 'PostgreSQL', 'Migrations'],
+		content: [
+			{
+				type: 'paragraph',
+				content:
+					'Most migration incidents come from tight coupling between schema and app deploy timing. Expand-contract removes that risk.'
+			},
+			{
+				type: 'heading',
+				content: 'Expand then contract'
+			},
+			{
+				type: 'code',
+				language: 'sql',
+				code: `-- expand
 ALTER TABLE invoices ADD COLUMN external_reference text;
 
 -- backfill in batches
@@ -122,16 +122,16 @@ WHERE external_reference IS NULL
 LIMIT 1000;
 
 -- contract (after all services stop reading old field)
-ALTER TABLE invoices DROP COLUMN legacy_reference;`,
-      },
-      {
-        type: "list",
-        items: [
-          "Make every step forward-compatible.",
-          "Backfill in bounded batches with progress metrics.",
-          "Run contract cleanup only after telemetry confirms safety.",
-        ],
-      },
-    ],
-  },
+ALTER TABLE invoices DROP COLUMN legacy_reference;`
+			},
+			{
+				type: 'list',
+				items: [
+					'Make every step forward-compatible.',
+					'Backfill in bounded batches with progress metrics.',
+					'Run contract cleanup only after telemetry confirms safety.'
+				]
+			}
+		]
+	}
 ];
