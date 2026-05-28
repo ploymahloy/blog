@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { TagChip } from '../components/tag-chip';
+import { TagChip } from '../components/Tag';
 import { posts } from '../data/posts';
 import type { BlogPost } from '../types/content';
 

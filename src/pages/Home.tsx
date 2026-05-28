@@ -1,4 +1,4 @@
-import { ProjectCard } from '../components/project-card';
+import { ProjectCard } from '../components/Card';
 import { projects } from '../data/projects';
 
 export function HomePage() {
