@@ -1,5 +1,20 @@
-function App() {
-	return <></>;
-}
+import { Navigate, Route, Routes } from "react-router-dom";
 
-export default App;
+import { SiteHeader } from "./components/site-header";
+import { BlogPage } from "./pages/blog-page";
+import { HomePage } from "./pages/home-page";
+
+export function App() {
+  return (
+    <div className="min-h-screen bg-surface">
+      <SiteHeader />
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
