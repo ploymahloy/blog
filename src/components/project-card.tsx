@@ -6,7 +6,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <article className="rounded-xl border border-panel-border bg-panel p-5 shadow-soft transition-transform duration-200 hover:-translate-y-0.5">
+    <article className="rounded-xl bg-panel p-5 shadow-soft transition-transform duration-200 hover:-translate-y-0.5">
       <p className="text-xs font-medium uppercase tracking-wide text-accent">
         Featured Project
       </p>
@@ -23,7 +23,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {project.stack.map((tool) => (
           <li
             key={tool}
-            className="rounded-full border border-panel-border bg-panel-muted px-2.5 py-1 text-xs text-text-secondary"
+            className="rounded-full bg-panel-muted px-2.5 py-1 text-xs text-text-secondary"
           >
             {tool}
           </li>

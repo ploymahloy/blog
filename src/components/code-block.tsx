@@ -27,10 +27,12 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
 			<button
 				type='button'
 				onClick={handleCopy}
-				className='block w-full cursor-copy overflow-x-auto rounded-xl border border-panel-border bg-[#1f2430] p-4 text-left shadow-soft'>
+				className='block w-full cursor-copy overflow-x-auto rounded-xl border border-panel-border bg-panel-muted p-4 text-left shadow-soft'>
 				<Highlight theme={themes.vsDark} code={trimmedCode} language={language}>
 					{({ className, style, tokens, getLineProps, getTokenProps }) => (
-						<pre className={className} style={{ ...style, margin: 0 }}>
+						<pre
+							className={className}
+							style={{ ...style, margin: 0, backgroundColor: 'transparent' }}>
 							{tokens.map((line, lineIndex) => (
 								<div key={lineIndex} {...getLineProps({ line })}>
 									{line.map((token, tokenIndex) => (

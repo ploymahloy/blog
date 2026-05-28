@@ -1,24 +1,20 @@
-import { ProjectCard } from "../components/project-card";
-import { projects } from "../data/projects";
+import { ProjectCard } from '../components/project-card';
+import { projects } from '../data/projects';
 
 export function HomePage() {
-  return (
-    <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
-      <p className="text-sm uppercase tracking-wide text-accent">
-        Software Engineer Portfolio
-      </p>
-      <h1 className="mt-2 text-3xl font-semibold text-text-primary sm:text-4xl">
-        Featured Projects
-      </h1>
-      <p className="mt-4 max-w-3xl text-base leading-relaxed text-text-secondary">
-        I build reliable systems and developer-friendly tools. These are selected
-        projects that balance product impact with engineering quality.
-      </p>
-      <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
-      </div>
-    </section>
-  );
+	return (
+		<section className='mx-auto w-full max-w-6xl px-4 py-10 md:px-6'>
+			<p className='text-5xl font-semibold text-center text-text-primary md:text-7xl'>Patrick Mahloy</p>
+			<p className='text-sm uppercase tracking-wide text-accent text-center'>Software Engineer</p>
+			<p className='my-4 text-text-secondary text-center whitespace-pre-line'>
+				&quot;Born to ship...forced to estimate story points.&quot;
+			</p>
+			<h1 className='mt-2 text-3xl font-semibold text-text-primary md:text-4xl'>Featured Projects</h1>
+			<div className='mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3'>
+				{projects.map(project => (
+					<ProjectCard key={project.id} project={project} />
+				))}
+			</div>
+		</section>
+	);
 }
