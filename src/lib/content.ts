@@ -9,7 +9,6 @@ interface ProjectRow {
 	stack: string[];
 	repo_url: string;
 	live_url: string | null;
-	featured_reason: string;
 	updated_at: string;
 }
 
@@ -31,8 +30,7 @@ function mapProject(row: ProjectRow): Project {
 		summary: row.summary,
 		stack: row.stack,
 		repoUrl: row.repo_url,
-		liveUrl: row.live_url ?? undefined,
-		featuredReason: row.featured_reason
+		liveUrl: row.live_url ?? undefined
 	};
 }
 
@@ -55,8 +53,7 @@ function projectToRow(project: Project): Omit<ProjectRow, 'updated_at'> {
 		summary: project.summary,
 		stack: project.stack,
 		repo_url: project.repoUrl,
-		live_url: project.liveUrl ?? null,
-		featured_reason: project.featuredReason
+		live_url: project.liveUrl ?? null
 	};
 }
 

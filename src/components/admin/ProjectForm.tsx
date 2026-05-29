@@ -20,7 +20,6 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 	const [stackText, setStackText] = useState(initial?.stack.join(', ') ?? '');
 	const [repoUrl, setRepoUrl] = useState(initial?.repoUrl ?? '');
 	const [liveUrl, setLiveUrl] = useState(initial?.liveUrl ?? '');
-	const [featuredReason, setFeaturedReason] = useState(initial?.featuredReason ?? '');
 	const [error, setError] = useState<string | null>(null);
 	const [isSaving, setIsSaving] = useState(false);
 
@@ -39,7 +38,7 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 			.map(item => item.trim())
 			.filter(Boolean);
 
-		if (!title.trim() || !summary.trim() || !repoUrl.trim() || !featuredReason.trim() || stack.length === 0) {
+		if (!title.trim() || !summary.trim() || !repoUrl.trim() || stack.length === 0) {
 			setError('Fill in all required fields and at least one stack item.');
 			return;
 		}
@@ -52,8 +51,7 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 				summary: summary.trim(),
 				stack,
 				repoUrl: repoUrl.trim(),
-				liveUrl: liveUrl.trim() || undefined,
-				featuredReason: featuredReason.trim()
+				liveUrl: liveUrl.trim() || undefined
 			});
 		} catch (submitError) {
 			setError(submitError instanceof Error ? submitError.message : 'Failed to save project');
@@ -112,18 +110,6 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 					Live URL (optional)
 				</label>
 				<input id='project-live' type='url' value={liveUrl} onChange={event => setLiveUrl(event.target.value)} className={inputClassName} />
-			</div>
-			<div>
-				<label htmlFor='project-featured' className='mb-1 block text-sm text-text-secondary'>
-					Featured reason
-				</label>
-				<textarea
-					id='project-featured'
-					value={featuredReason}
-					onChange={event => setFeaturedReason(event.target.value)}
-					rows={3}
-					className={inputClassName}
-				/>
 			</div>
 
 			{error ?

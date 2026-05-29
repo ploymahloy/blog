@@ -5,7 +5,6 @@ export interface Project {
   stack: string[];
   repoUrl: string;
   liveUrl?: string;
-  featuredReason: string;
 }
 
 export interface CodeArticleBlock {

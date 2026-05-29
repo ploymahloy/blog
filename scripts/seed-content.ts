@@ -57,8 +57,7 @@ async function seed() {
 		summary: project.summary,
 		stack: project.stack,
 		repo_url: project.repoUrl,
-		live_url: project.liveUrl ?? null,
-		featured_reason: project.featuredReason
+		live_url: project.liveUrl ?? null
 	}));
 
 	const { error: projectsError } = await supabase.from('projects').upsert(projectRows, { onConflict: 'id' });

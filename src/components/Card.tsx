@@ -10,7 +10,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
 			<h3 className='text-xl font-semibold text-text-primary'>{project.title}</h3>
 			<div className='grow'>
 				<p className='mt-3 text-sm leading-relaxed text-text-secondary'>{project.summary}</p>
-				<p className='mt-4 text-sm leading-relaxed text-text-secondary'>{project.featuredReason}</p>
 			</div>
 			<ul className='mt-4 flex flex-wrap gap-2'>
 				{project.stack.map(tool => (
