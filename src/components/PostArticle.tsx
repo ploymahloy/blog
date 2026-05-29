@@ -1,6 +1,6 @@
-import { CodeBlock } from './CodeBlock';
-import { TagChip } from './Tag';
-import type { BlogPost } from '../types/content';
+import { CodeBlock } from '@/components/CodeBlock';
+import { TagChip } from '@/components/Tag';
+import type { BlogPost } from '@/types/content';
 
 interface PostArticleProps {
 	post: BlogPost;

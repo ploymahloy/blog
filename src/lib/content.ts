@@ -1,6 +1,6 @@
-import type { ArticleBlock, BlogPost, Project } from '../types/content';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-import { supabase } from './supabase';
+import type { ArticleBlock, BlogPost, Project } from '@/types/content';
 
 interface ProjectRow {
 	id: string;
@@ -69,45 +69,45 @@ function blogPostToRow(post: BlogPost): Omit<BlogPostRow, 'updated_at'> {
 	};
 }
 
-export async function fetchProjects(): Promise<Project[]> {
-	const { data, error } = await supabase.from('projects').select('*').order('title');
+export async function fetchProjects(client: SupabaseClient): Promise<Project[]> {
+	const { data, error } = await client.from('projects').select('*').order('title');
 
 	if (error) throw new Error(error.message);
 	return (data as ProjectRow[]).map(mapProject);
 }
 
-export async function fetchPosts(): Promise<BlogPost[]> {
-	const { data, error } = await supabase.from('blog_posts').select('*').order('published_at', { ascending: false });
+export async function fetchPosts(client: SupabaseClient): Promise<BlogPost[]> {
+	const { data, error } = await client.from('blog_posts').select('*').order('published_at', { ascending: false });
 
 	if (error) throw new Error(error.message);
 	return (data as BlogPostRow[]).map(mapBlogPost);
 }
 
-export async function fetchPostById(id: string): Promise<BlogPost | null> {
-	const { data, error } = await supabase.from('blog_posts').select('*').eq('id', id).maybeSingle();
+export async function fetchPostById(client: SupabaseClient, id: string): Promise<BlogPost | null> {
+	const { data, error } = await client.from('blog_posts').select('*').eq('id', id).maybeSingle();
 
 	if (error) throw new Error(error.message);
 	if (!data) return null;
 	return mapBlogPost(data as BlogPostRow);
 }
 
-export async function upsertProject(project: Project): Promise<void> {
-	const { error } = await supabase.from('projects').upsert(projectToRow(project), { onConflict: 'id' });
+export async function upsertProject(client: SupabaseClient, project: Project): Promise<void> {
+	const { error } = await client.from('projects').upsert(projectToRow(project), { onConflict: 'id' });
 	if (error) throw new Error(error.message);
 }
 
-export async function deleteProject(id: string): Promise<void> {
-	const { error } = await supabase.from('projects').delete().eq('id', id);
+export async function deleteProject(client: SupabaseClient, id: string): Promise<void> {
+	const { error } = await client.from('projects').delete().eq('id', id);
 	if (error) throw new Error(error.message);
 }
 
-export async function upsertBlogPost(post: BlogPost): Promise<void> {
-	const { error } = await supabase.from('blog_posts').upsert(blogPostToRow(post), { onConflict: 'id' });
+export async function upsertBlogPost(client: SupabaseClient, post: BlogPost): Promise<void> {
+	const { error } = await client.from('blog_posts').upsert(blogPostToRow(post), { onConflict: 'id' });
 	if (error) throw new Error(error.message);
 }
 
-export async function deleteBlogPost(id: string): Promise<void> {
-	const { error } = await supabase.from('blog_posts').delete().eq('id', id);
+export async function deleteBlogPost(client: SupabaseClient, id: string): Promise<void> {
+	const { error } = await client.from('blog_posts').delete().eq('id', id);
 	if (error) throw new Error(error.message);
 }
 

@@ -1,9 +1,13 @@
+'use client';
+
 import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { supabase } from '../lib/supabase';
-import { AuthContext } from './auth-context';
-import type { AuthContextValue, AuthStep } from './auth-types';
+import { createSupabaseBrowserClient } from '@/lib/supabase/client';
+import { AuthContext } from '@/context/auth-context';
+import type { AuthContextValue, AuthStep } from '@/context/auth-types';
+
+const supabase = createSupabaseBrowserClient();
 
 async function resolveAuthStep(): Promise<{
 	step: AuthStep;
@@ -24,7 +28,7 @@ async function resolveAuthStep(): Promise<{
 			return { step: 'password', factorId: null };
 		}
 
-		const totpFactor = factorsData.totp.find(factor => factor.status === 'verified');
+		const totpFactor = factorsData.totp.find((factor: { status: string; id: string }) => factor.status === 'verified');
 		if (totpFactor) {
 			return { step: 'mfa', factorId: totpFactor.id };
 		}
@@ -99,7 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 		const {
 			data: { subscription }
-		} = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, nextSession) => {
+		} = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, nextSession: Session | null) => {
 			void handleSession(nextSession);
 		});
 

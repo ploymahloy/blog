@@ -1,4 +1,4 @@
-import { socialLinks } from '../data/profile';
+import { socialLinks } from '@/data/profile';
 
 interface SocialLinksProps {
 	className?: string;

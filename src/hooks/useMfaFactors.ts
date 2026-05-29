@@ -1,6 +1,10 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
-import { supabase } from '../lib/supabase';
+import { createSupabaseBrowserClient } from '@/lib/supabase/client';
+
+const supabase = createSupabaseBrowserClient();
 
 export function useMfaFactors() {
 	const [verifiedFactors, setVerifiedFactors] = useState<string[]>([]);
@@ -12,7 +16,11 @@ export function useMfaFactors() {
 			setError(factorsError.message);
 			return;
 		}
-		setVerifiedFactors(data.totp.filter(f => f.status === 'verified').map(f => f.friendly_name ?? f.id));
+		setVerifiedFactors(
+			data.totp
+				.filter((factor: { status: string }) => factor.status === 'verified')
+				.map((factor: { friendly_name?: string; id: string }) => factor.friendly_name ?? factor.id)
+		);
 	};
 
 	useEffect(() => {

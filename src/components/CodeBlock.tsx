@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 import { Highlight, themes } from 'prism-react-renderer';
 
@@ -20,13 +22,13 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
 		<div className='group relative mt-4'>
 			<button
 				type='button'
-				onClick={handleCopy}
+				onClick={() => void handleCopy()}
 				className='absolute right-3 top-3 z-10 rounded-md border border-panel-border bg-surface px-2.5 py-1 text-xs text-text-secondary transition-colors hover:border-accent hover:text-accent'>
 				{isCopied ? 'Copied' : 'Copy'}
 			</button>
 			<button
 				type='button'
-				onClick={handleCopy}
+				onClick={() => void handleCopy()}
 				className='block w-full cursor-copy overflow-x-auto rounded-xl border border-panel-border bg-panel-muted p-4 text-left shadow-soft'>
 				<Highlight theme={themes.vsDark} code={trimmedCode} language={language}>
 					{({ className, style, tokens, getLineProps, getTokenProps }) => (

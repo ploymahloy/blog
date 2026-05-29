@@ -1,8 +1,11 @@
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+'use client';
 
-import { useAuth } from '../../hooks/useAuth';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
-const navClassName = ({ isActive }: { isActive: boolean }) =>
+import { useAuth } from '@/hooks/useAuth';
+
+const navClassName = (isActive: boolean) =>
 	`rounded-md px-3 py-2 text-sm transition-colors ${
 		isActive ? 'bg-accent/20 text-accent' : 'text-text-secondary hover:bg-panel-muted hover:text-text-primary'
 	}`;
@@ -10,7 +13,8 @@ const navClassName = ({ isActive }: { isActive: boolean }) =>
 interface AdminShellProps {
 	children: React.ReactNode;
 	title: string;
-	backLink?: { to: string; label: string; state?: unknown };
+	backHref?: string;
+	backLabel?: string;
 }
 
 function getViewSitePath(pathname: string): string {
@@ -19,15 +23,15 @@ function getViewSitePath(pathname: string): string {
 	return '/';
 }
 
-export function AdminShell({ children, title, backLink }: AdminShellProps) {
-	const navigate = useNavigate();
-	const location = useLocation();
+export function AdminShell({ children, title, backHref, backLabel }: AdminShellProps) {
+	const router = useRouter();
+	const pathname = usePathname();
 	const { signOut, user } = useAuth();
-	const viewSitePath = getViewSitePath(location.pathname);
+	const viewSitePath = getViewSitePath(pathname);
 
 	const handleSignOut = async () => {
 		await signOut();
-		navigate('/admin/login');
+		router.replace('/admin/login');
 	};
 
 	return (
@@ -42,18 +46,18 @@ export function AdminShell({ children, title, backLink }: AdminShellProps) {
 				</div>
 				<div className='flex flex-wrap items-center gap-2'>
 					<nav className='flex gap-1'>
-						<NavLink to='/admin' end className={navClassName}>
+						<Link href='/admin' className={navClassName(pathname === '/admin')}>
 							Dashboard
-						</NavLink>
-						<NavLink to='/admin/projects' className={navClassName}>
+						</Link>
+						<Link href='/admin/projects' className={navClassName(pathname.startsWith('/admin/projects'))}>
 							Projects
-						</NavLink>
-						<NavLink to='/admin/posts' className={navClassName}>
+						</Link>
+						<Link href='/admin/posts' className={navClassName(pathname.startsWith('/admin/posts'))}>
 							Posts
-						</NavLink>
-						<NavLink to='/admin/mfa' className={navClassName}>
+						</Link>
+						<Link href='/admin/mfa' className={navClassName(pathname.startsWith('/admin/mfa'))}>
 							MFA
-						</NavLink>
+						</Link>
 					</nav>
 					<button
 						type='button'
@@ -64,11 +68,11 @@ export function AdminShell({ children, title, backLink }: AdminShellProps) {
 				</div>
 			</div>
 			<div className='mt-8'>
-				{backLink ?
-					<Link to={backLink.to} state={backLink.state} className='text-sm text-accent hover:text-accent-soft'>
-						{backLink.label}
+				{backHref && backLabel ?
+					<Link href={backHref} className='text-sm text-accent hover:text-accent-soft'>
+						{backLabel}
 					</Link>
-				:	<Link to={viewSitePath} className='text-sm text-accent hover:text-accent-soft'>
+				:	<Link href={viewSitePath} className='text-sm text-accent hover:text-accent-soft'>
 						← View site
 					</Link>
 				}

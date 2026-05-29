@@ -1,10 +1,20 @@
-import { Link, NavLink, useMatch } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const navLinkBaseClassName =
 	'rounded-md px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent';
 
+function navLinkClassName(isActive: boolean) {
+	return `${navLinkBaseClassName} ${
+		isActive ? 'bg-accent/20 text-accent' : 'text-text-secondary hover:bg-panel-muted hover:text-text-primary'
+	}`;
+}
+
 export function SiteHeader() {
-	const isPostPage = useMatch('/blog/:id');
+	const pathname = usePathname();
+	const isPostPage = pathname.startsWith('/blog/') && pathname !== '/blog';
 
 	return (
 		<header>
@@ -12,35 +22,19 @@ export function SiteHeader() {
 				<div>
 					{isPostPage ?
 						<Link
-							to='/blog'
+							href='/blog'
 							className='rounded-md px-3 py-2 text-sm text-accent transition-colors hover:text-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'>
 							Back
 						</Link>
 					:	null}
 				</div>
 				<nav className='flex gap-2'>
-					<NavLink
-						to='/'
-						className={({ isActive }) =>
-							`${navLinkBaseClassName} ${
-								isActive ? 'bg-accent/20 text-accent' : (
-									'text-text-secondary hover:bg-panel-muted hover:text-text-primary'
-								)
-							}`
-						}>
+					<Link href='/' className={navLinkClassName(pathname === '/')}>
 						Home
-					</NavLink>
-					<NavLink
-						to='/blog'
-						className={({ isActive }) =>
-							`${navLinkBaseClassName} ${
-								isActive ? 'bg-accent/20 text-accent' : (
-									'text-text-secondary hover:bg-panel-muted hover:text-text-primary'
-								)
-							}`
-						}>
+					</Link>
+					<Link href='/blog' className={navLinkClassName(pathname === '/blog' || isPostPage)}>
 						Blog
-					</NavLink>
+					</Link>
 				</nav>
 			</div>
 		</header>

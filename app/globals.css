@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+	--color-surface: #1a1a1d;
+	--color-panel: #26262b;
+	--color-panel-muted: #33333a;
+	--color-panel-border: #45454f;
+	--color-text-primary: #f2f2f4;
+	--color-text-secondary: #cacad1;
+	--color-text-muted: #a0a0ab;
+	--color-accent: #f59e0b;
+	--color-accent-soft: #fbbf24;
+	--shadow-soft: 0 10px 30px rgb(0 0 0 / 28%);
+}
+
+@layer base {
+	html,
+	body {
+		min-height: 100%;
+	}
+
+	body {
+		background-color: var(--color-surface);
+		color: var(--color-text-primary);
+	}
+}

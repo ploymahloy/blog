@@ -1,4 +1,4 @@
-import type { ArticleBlock } from '../../types/content';
+import type { ArticleBlock } from '@/types/content';
 
 const BLOCK_TYPES: ArticleBlock['type'][] = ['paragraph', 'heading', 'list', 'link', 'code'];
 
