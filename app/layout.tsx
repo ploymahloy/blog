@@ -17,7 +17,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang='en'>
 			<body className='min-h-screen bg-surface'>
 				<SiteHeader />
-				{children}
+				<main
+					id='page-content'
+					className='[view-transition-name:page] motion-reduce:animate-none page-load:animate-page-enter page-load:fill-forwards'>
+					{children}
+				</main>
 			</body>
 		</html>
 	);

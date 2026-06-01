@@ -11,6 +11,48 @@
 	--color-accent: #f59e0b;
 	--color-accent-soft: #fbbf24;
 	--shadow-soft: 0 10px 30px rgb(0 0 0 / 28%);
+	--animate-page-enter: page-enter 0.5s ease-out;
+	--animate-page-exit: page-exit 0.35s ease-in;
+
+	@keyframes page-enter {
+		from {
+			opacity: 0;
+			transform: translateY(12px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes page-exit {
+		from {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		to {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+	}
+}
+
+@custom-variant page-load (&:where(html:not(:active-view-transition) &));
+
+@view-transition {
+	navigation: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	::view-transition-old(page) {
+		animation: page-exit 0.35s ease-in forwards;
+	}
+
+	::view-transition-new(page) {
+		animation: page-enter 0.5s ease-out forwards;
+	}
 }
 
 @layer base {

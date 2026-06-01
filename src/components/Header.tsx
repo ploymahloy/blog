@@ -17,7 +17,7 @@ export function SiteHeader() {
 	const isPostPage = pathname.startsWith('/blog/') && pathname !== '/blog';
 
 	return (
-		<header>
+		<header className='[view-transition-name:none]'>
 			<div className='mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6'>
 				<div>
 					{isPostPage ?
