@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { deleteBlogPost, deleteProject, upsertBlogPost, upsertProject } from '@/lib/content';
+import { deleteBlogPost, deleteProject, reorderProjects, upsertBlogPost, upsertProject } from '@/lib/content';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type { BlogPost, Project } from '@/types/content';
 
@@ -28,6 +28,12 @@ export async function saveProjectAction(project: Project) {
 export async function deleteProjectAction(id: string) {
 	const supabase = await createSupabaseServerClient();
 	await deleteProject(supabase, id);
+	revalidatePublicContent();
+}
+
+export async function reorderProjectsAction(orderedIds: string[]) {
+	const supabase = await createSupabaseServerClient();
+	await reorderProjects(supabase, orderedIds);
 	revalidatePublicContent();
 }
 

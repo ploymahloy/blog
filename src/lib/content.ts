@@ -9,6 +9,7 @@ interface ProjectRow {
 	stack: string[];
 	repo_url: string;
 	live_url: string | null;
+	sort_order: number;
 	updated_at: string;
 }
 
@@ -70,7 +71,7 @@ function blogPostToRow(post: BlogPost): Omit<BlogPostRow, 'updated_at'> {
 }
 
 export async function fetchProjects(client: SupabaseClient): Promise<Project[]> {
-	const { data, error } = await client.from('projects').select('*').order('title');
+	const { data, error } = await client.from('projects').select('*').order('sort_order', { ascending: true });
 
 	if (error) throw new Error(error.message);
 	return (data as ProjectRow[]).map(mapProject);
@@ -91,9 +92,43 @@ export async function fetchPostById(client: SupabaseClient, id: string): Promise
 	return mapBlogPost(data as BlogPostRow);
 }
 
-export async function upsertProject(client: SupabaseClient, project: Project): Promise<void> {
-	const { error } = await client.from('projects').upsert(projectToRow(project), { onConflict: 'id' });
+async function nextProjectSortOrder(client: SupabaseClient): Promise<number> {
+	const { data, error } = await client
+		.from('projects')
+		.select('sort_order')
+		.order('sort_order', { ascending: false })
+		.limit(1)
+		.maybeSingle();
+
 	if (error) throw new Error(error.message);
+	if (!data) return 0;
+	return (data as Pick<ProjectRow, 'sort_order'>).sort_order + 1;
+}
+
+export async function upsertProject(client: SupabaseClient, project: Project): Promise<void> {
+	const row = projectToRow(project);
+	const { data: existing, error: fetchError } = await client.from('projects').select('id').eq('id', project.id).maybeSingle();
+
+	if (fetchError) throw new Error(fetchError.message);
+
+	if (existing) {
+		const { error } = await client.from('projects').update(row).eq('id', project.id);
+		if (error) throw new Error(error.message);
+		return;
+	}
+
+	const sortOrder = await nextProjectSortOrder(client);
+	const { error } = await client.from('projects').insert({ ...row, sort_order: sortOrder });
+	if (error) throw new Error(error.message);
+}
+
+export async function reorderProjects(client: SupabaseClient, orderedIds: string[]): Promise<void> {
+	const updates = orderedIds.map((id, index) =>
+		client.from('projects').update({ sort_order: index }).eq('id', id)
+	);
+	const results = await Promise.all(updates);
+	const failed = results.find(result => result.error);
+	if (failed?.error) throw new Error(failed.error.message);
 }
 
 export async function deleteProject(client: SupabaseClient, id: string): Promise<void> {

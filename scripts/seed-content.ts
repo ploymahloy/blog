@@ -51,13 +51,14 @@ const supabase = createClient(supabaseUrl, serviceRoleKey, {
 });
 
 async function seed() {
-	const projectRows = projects.map(project => ({
+	const projectRows = projects.map((project, index) => ({
 		id: project.id,
 		title: project.title,
 		summary: project.summary,
 		stack: project.stack,
 		repo_url: project.repoUrl,
-		live_url: project.liveUrl ?? null
+		live_url: project.liveUrl ?? null,
+		sort_order: index
 	}));
 
 	const { error: projectsError } = await supabase.from('projects').upsert(projectRows, { onConflict: 'id' });
