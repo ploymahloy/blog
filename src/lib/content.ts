@@ -47,7 +47,7 @@ function mapBlogPost(row: BlogPostRow): BlogPost {
 	};
 }
 
-function projectToRow(project: Project): Omit<ProjectRow, 'updated_at'> {
+function projectToRow(project: Project): Omit<ProjectRow, 'updated_at' | 'sort_order'> {
 	return {
 		id: project.id,
 		title: project.title,
