@@ -33,7 +33,7 @@ export function BlogList({ posts }: BlogListProps) {
 					return true;
 				}
 
-				const searchableText = `${post.title} ${post.tags.join(' ')}`.toLowerCase();
+				const searchableText = `${post.title} ${post.summary} ${post.tags.join(' ')}`.toLowerCase();
 				return searchableText.includes(normalizedQuery);
 			})
 			.sort(sortByNewest);
@@ -80,6 +80,7 @@ export function BlogList({ posts }: BlogListProps) {
 									<p className='mt-2 text-sm text-text-muted'>
 										{new Date(post.publishedAt).toLocaleDateString()} · {post.readTime}
 									</p>
+									<p className='mt-3 text-base leading-relaxed text-text-secondary'>{post.summary}</p>
 									<div className='mt-4 flex flex-wrap gap-2'>
 										{post.tags.map(tag => (
 											<TagChip key={`${post.id}-${tag}`} tag={tag} />
