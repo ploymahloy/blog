@@ -7,32 +7,6 @@ export interface Project {
   liveUrl?: string;
 }
 
-export interface CodeArticleBlock {
-  type: "code";
-  language: string;
-  code: string;
-}
-
-export interface ParagraphArticleBlock {
-  type: "paragraph";
-  content: string;
-}
-
-export interface HeadingArticleBlock {
-  type: "heading";
-  content: string;
-}
-
-export interface ListArticleBlock {
-  type: "list";
-  items: string[];
-}
-
-export interface LinkArticleBlock {
-  type: "link";
-  content: string;
-}
-
 export interface BlogPost {
   id: string;
   title: string;
@@ -40,12 +14,5 @@ export interface BlogPost {
   publishedAt: string;
   readTime: string;
   tags: string[];
-  content: ArticleBlock[];
+  content: string;
 }
-
-export type ArticleBlock =
-  | ParagraphArticleBlock
-  | HeadingArticleBlock
-  | ListArticleBlock
-  | LinkArticleBlock
-  | CodeArticleBlock;

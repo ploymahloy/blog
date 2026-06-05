@@ -4,17 +4,15 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { AdminShell } from '@/components/admin/AdminShell';
-import { BlockBuilder } from '@/components/admin/BlockBuilder';
-import { loadAdminPostDraft, saveAdminPostDraft } from '@/lib/admin-draft-storage';
-import {
-	buildPostFromForm,
-	getAdminPostPreviewPath,
-	validatePostDraft
-} from '@/lib/admin-post-state';
+import { MarkdownEditor } from '@/components/admin/MarkdownEditor';
+import { useAdminContent } from '@/hooks/useAdminContent';
+import { useAdminPostRouteId } from '@/hooks/useAdminPostRouteId';
+import { publishBlogPostAction } from '@/lib/actions/admin-content';
+import { buildPostFromForm, validatePostDraft } from '@/lib/admin-post-state';
+import { clearAdminPostDraft, loadAdminPostDraft, saveAdminPostDraft } from '@/lib/admin-draft-storage';
 import { fetchPostById } from '@/lib/content';
 import { createSupabaseBrowserClient } from '@/lib/supabase/client';
-import { useAdminPostRouteId } from '@/hooks/useAdminPostRouteId';
-import type { ArticleBlock, BlogPost } from '@/types/content';
+import type { BlogPost } from '@/types/content';
 
 const inputClassName =
 	'w-full rounded-lg bg-surface px-3 py-2 text-sm text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent';
@@ -26,19 +24,21 @@ const emptyPost = (): BlogPost => ({
 	publishedAt: new Date().toISOString().slice(0, 10),
 	readTime: '5 min read',
 	tags: [],
-	content: [{ type: 'paragraph', content: '' }]
+	content: ''
 });
 
 export default function AdminPostEditorPage() {
 	const routeId = useAdminPostRouteId();
 	const isNew = routeId === 'new';
 	const router = useRouter();
+	const { reload } = useAdminContent();
 
 	const [post, setPost] = useState<BlogPost>(emptyPost);
 	const [tagsText, setTagsText] = useState('');
 	const [isFetchingExisting, setIsFetchingExisting] = useState(false);
+	const [hasLoadedInitial, setHasLoadedInitial] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [isPreviewing, setIsPreviewing] = useState(false);
+	const [isPublishing, setIsPublishing] = useState(false);
 
 	useEffect(() => {
 		if (!routeId) return;
@@ -53,9 +53,15 @@ export default function AdminPostEditorPage() {
 			}
 		}
 
-		if (isNew) return;
+		if (isNew) {
+			setHasLoadedInitial(true);
+			return;
+		}
 
-		if (draft) return;
+		if (draft) {
+			setHasLoadedInitial(true);
+			return;
+		}
 
 		let cancelled = false;
 
@@ -77,7 +83,10 @@ export default function AdminPostEditorPage() {
 					setError(loadError instanceof Error ? loadError.message : 'Failed to load post');
 				}
 			} finally {
-				if (!cancelled) setIsFetchingExisting(false);
+				if (!cancelled) {
+					setIsFetchingExisting(false);
+					setHasLoadedInitial(true);
+				}
 			}
 		};
 
@@ -88,7 +97,17 @@ export default function AdminPostEditorPage() {
 		};
 	}, [isNew, routeId]);
 
-	const handlePreview = (event: React.FormEvent) => {
+	useEffect(() => {
+		if (!routeId || !hasLoadedInitial) return;
+
+		const timeoutId = window.setTimeout(() => {
+			saveAdminPostDraft(routeId, buildPostFromForm(post, tagsText));
+		}, 300);
+
+		return () => window.clearTimeout(timeoutId);
+	}, [hasLoadedInitial, post, routeId, tagsText]);
+
+	const handlePublish = async (event: React.FormEvent) => {
 		event.preventDefault();
 		setError(null);
 
@@ -101,10 +120,17 @@ export default function AdminPostEditorPage() {
 
 		if (!routeId) return;
 
-		setIsPreviewing(true);
-		saveAdminPostDraft(routeId, builtPost);
-		router.push(getAdminPostPreviewPath(routeId));
-		setIsPreviewing(false);
+		setIsPublishing(true);
+		try {
+			await publishBlogPostAction(builtPost);
+			clearAdminPostDraft(routeId, builtPost.id);
+			await reload();
+			router.replace('/admin/posts');
+		} catch (publishError) {
+			setError(publishError instanceof Error ? publishError.message : 'Failed to publish post');
+		} finally {
+			setIsPublishing(false);
+		}
 	};
 
 	const shellTitle = isNew ? 'New post' : 'Edit post';
@@ -120,7 +146,7 @@ export default function AdminPostEditorPage() {
 
 	return (
 		<AdminShell title={shellTitle} backHref='/admin/posts' backLabel='← Back to posts'>
-			<form onSubmit={handlePreview} className='space-y-6 rounded-xl bg-panel p-6'>
+			<form onSubmit={event => void handlePublish(event)} className='space-y-6 rounded-xl bg-panel p-6'>
 				<div className='grid gap-4 sm:grid-cols-2'>
 					<div>
 						<label htmlFor='post-id' className='mb-1 block text-sm text-text-secondary'>
@@ -196,13 +222,7 @@ export default function AdminPostEditorPage() {
 					</div>
 				</div>
 
-				<div>
-					<p className='mb-2 text-sm font-medium text-text-secondary'>Content blocks</p>
-					<BlockBuilder
-						blocks={post.content}
-						onChange={(content: ArticleBlock[]) => setPost(current => ({ ...current, content }))}
-					/>
-				</div>
+				<MarkdownEditor value={post.content} onChange={content => setPost(current => ({ ...current, content }))} />
 
 				{error ?
 					<p className='text-sm text-red-400' role='alert'>
@@ -212,9 +232,9 @@ export default function AdminPostEditorPage() {
 
 				<button
 					type='submit'
-					disabled={isPreviewing}
+					disabled={isPublishing}
 					className='rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-soft disabled:opacity-50'>
-					{isPreviewing ? 'Opening preview…' : 'Preview'}
+					{isPublishing ? 'Publishing…' : 'Publish'}
 				</button>
 			</form>
 		</AdminShell>

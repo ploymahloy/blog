@@ -12,7 +12,6 @@ export function saveAdminPostDraft(routeId: string, post: BlogPost) {
 	const payload = JSON.stringify(post);
 	sessionStorage.setItem(draftKey(routeId), payload);
 
-	// When editing at /admin/posts/new, also key by slug so preview survives param hydration edge cases.
 	if (routeId === 'new' && post.id) {
 		sessionStorage.setItem(draftKey(post.id), payload);
 	}

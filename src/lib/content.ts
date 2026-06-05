@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-import type { ArticleBlock, BlogPost, Project } from '@/types/content';
+import type { BlogPost, Project } from '@/types/content';
 
 interface ProjectRow {
 	id: string;
@@ -20,7 +20,7 @@ interface BlogPostRow {
 	published_at: string;
 	read_time: string;
 	tags: string[];
-	content: ArticleBlock[];
+	content: string;
 	updated_at: string;
 }
 

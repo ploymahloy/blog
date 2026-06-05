@@ -34,7 +34,3 @@ export function buildPostFromForm(post: BlogPost, tagsText: string): BlogPost {
 export function getAdminPostEditorPath(routeId: string): string {
 	return routeId === 'new' ? '/admin/posts/new' : `/admin/posts/${routeId}`;
 }
-
-export function getAdminPostPreviewPath(routeId: string): string {
-	return routeId === 'new' ? '/admin/posts/new/preview' : `/admin/posts/${routeId}/preview`;
-}
