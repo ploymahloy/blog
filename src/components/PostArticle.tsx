@@ -1,5 +1,5 @@
 import { MarkdownContent } from '@/components/MarkdownContent';
-import { TagChip } from '@/components/Tag';
+import { stripDuplicatePostLead } from '@/lib/strip-duplicate-post-lead';
 import type { BlogPost } from '@/types/content';
 
 interface PostArticleProps {
@@ -11,20 +11,11 @@ export function PostArticle({ post }: PostArticleProps) {
 		<article className='rounded-xl bg-panel p-6 shadow-soft'>
 			<header>
 				<h1 className='text-3xl font-semibold text-text-primary'>{post.title}</h1>
-				<p className='mt-2 text-sm text-text-muted'>
+				<p className='mt-2 mb-4 text-sm text-text-muted'>
 					{new Date(post.publishedAt).toLocaleDateString()} · {post.readTime}
 				</p>
-				<p className='mt-3 text-base leading-relaxed text-text-secondary'>{post.summary}</p>
-				<div className='mt-4 flex flex-wrap gap-2'>
-					{post.tags.map(tag => (
-						<TagChip key={`${post.id}-${tag}`} tag={tag} />
-					))}
-				</div>
 			</header>
-
-			<div className='mt-6'>
-				<MarkdownContent markdown={post.content} />
-			</div>
+			<MarkdownContent markdown={stripDuplicatePostLead(post.content, post.title, post.summary)} />
 		</article>
 	);
 }
