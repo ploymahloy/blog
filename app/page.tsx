@@ -6,7 +6,7 @@ export default async function HomePage() {
 	const projects = await getProjects();
 
 	return (
-		<section className='mx-auto w-full max-w-6xl px-4 py-10 md:px-6'>
+		<section className='mx-auto w-full max-w-6xl px-4 py-2 md:px-6'>
 			<p className='text-5xl font-semibold text-center text-text-primary md:text-7xl'>Patrick Mahloy</p>
 			<p className='mt-1 text-xl uppercase tracking-wide text-accent text-center'>Software Engineer</p>
 			<SocialLinks className='mt-3' />
