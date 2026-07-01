@@ -5,6 +5,7 @@ export interface Project {
   stack: string[];
   repoUrl: string;
   liveUrl?: string;
+  inProgress?: boolean;
 }
 
 export interface BlogPost {

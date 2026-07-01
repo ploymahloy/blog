@@ -17,6 +17,7 @@ export const projects: Project[] = [
       "Created an edge-ready flag service with deterministic bucketing and low-latency SDK evaluation.",
     stack: ["TypeScript", "Node.js", "Redis", "React"],
     repoUrl: "https://github.com/example/feature-flag-delivery",
+    inProgress: true,
   },
   {
     id: "developer-notes-ai",

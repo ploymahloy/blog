@@ -9,6 +9,7 @@ interface ProjectRow {
 	stack: string[];
 	repo_url: string;
 	live_url: string | null;
+	in_progress: boolean;
 	sort_order: number;
 	updated_at: string;
 }
@@ -31,7 +32,8 @@ function mapProject(row: ProjectRow): Project {
 		summary: row.summary,
 		stack: row.stack,
 		repoUrl: row.repo_url,
-		liveUrl: row.live_url ?? undefined
+		liveUrl: row.live_url ?? undefined,
+		inProgress: row.in_progress ?? false
 	};
 }
 
@@ -54,7 +56,8 @@ function projectToRow(project: Project): Omit<ProjectRow, 'updated_at' | 'sort_o
 		summary: project.summary,
 		stack: project.stack,
 		repo_url: project.repoUrl,
-		live_url: project.liveUrl ?? null
+		live_url: project.liveUrl ?? null,
+		in_progress: project.inProgress ?? false
 	};
 }
 

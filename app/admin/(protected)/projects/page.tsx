@@ -77,10 +77,15 @@ export default function AdminProjectsPage() {
 					</button>
 					<ul className='space-y-3'>
 						{projects.map((project, index) => (
-							<li key={project.id} className='flex flex-wrap items-center justify-between gap-3 rounded-xl bg-panel p-4'>
+							<li
+								key={project.id}
+								className='flex flex-wrap items-center justify-between gap-3 rounded-xl bg-panel p-4'>
 								<div>
 									<p className='font-medium text-text-primary'>{project.title}</p>
 									<p className='text-sm text-text-muted'>{project.id}</p>
+									{project.inProgress ?
+										<p className='mt-1 text-xs font-medium uppercase tracking-wide text-accent'>In progress</p>
+									:	null}
 								</div>
 								<div className='flex flex-wrap gap-2'>
 									<button
@@ -99,7 +104,10 @@ export default function AdminProjectsPage() {
 										className='text-sm text-text-secondary hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40'>
 										Move down
 									</button>
-									<button type='button' onClick={() => setEditing(project)} className='text-sm text-accent hover:text-accent-soft'>
+									<button
+										type='button'
+										onClick={() => setEditing(project)}
+										className='text-sm text-accent hover:text-accent-soft'>
 										Edit
 									</button>
 									<button

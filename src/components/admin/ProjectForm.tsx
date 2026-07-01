@@ -20,6 +20,7 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 	const [stackText, setStackText] = useState(initial?.stack.join(', ') ?? '');
 	const [repoUrl, setRepoUrl] = useState(initial?.repoUrl ?? '');
 	const [liveUrl, setLiveUrl] = useState(initial?.liveUrl ?? '');
+	const [inProgress, setInProgress] = useState(initial?.inProgress ?? false);
 	const [error, setError] = useState<string | null>(null);
 	const [isSaving, setIsSaving] = useState(false);
 
@@ -51,7 +52,8 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 				summary: summary.trim(),
 				stack,
 				repoUrl: repoUrl.trim(),
-				liveUrl: liveUrl.trim() || undefined
+				liveUrl: liveUrl.trim() || undefined,
+				inProgress
 			});
 		} catch (submitError) {
 			setError(submitError instanceof Error ? submitError.message : 'Failed to save project');
@@ -79,7 +81,13 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 				<label htmlFor='project-title' className='mb-1 block text-sm text-text-secondary'>
 					Title
 				</label>
-				<input id='project-title' type='text' value={title} onChange={event => setTitle(event.target.value)} className={inputClassName} />
+				<input
+					id='project-title'
+					type='text'
+					value={title}
+					onChange={event => setTitle(event.target.value)}
+					className={inputClassName}
+				/>
 			</div>
 			<div>
 				<label htmlFor='project-summary' className='mb-1 block text-sm text-text-secondary'>
@@ -97,19 +105,49 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 				<label htmlFor='project-stack' className='mb-1 block text-sm text-text-secondary'>
 					Stack (comma-separated)
 				</label>
-				<input id='project-stack' type='text' value={stackText} onChange={event => setStackText(event.target.value)} className={inputClassName} />
+				<input
+					id='project-stack'
+					type='text'
+					value={stackText}
+					onChange={event => setStackText(event.target.value)}
+					className={inputClassName}
+				/>
 			</div>
 			<div>
 				<label htmlFor='project-repo' className='mb-1 block text-sm text-text-secondary'>
 					Repo URL
 				</label>
-				<input id='project-repo' type='url' value={repoUrl} onChange={event => setRepoUrl(event.target.value)} className={inputClassName} />
+				<input
+					id='project-repo'
+					type='url'
+					value={repoUrl}
+					onChange={event => setRepoUrl(event.target.value)}
+					className={inputClassName}
+				/>
 			</div>
 			<div>
 				<label htmlFor='project-live' className='mb-1 block text-sm text-text-secondary'>
 					Live URL (optional)
 				</label>
-				<input id='project-live' type='url' value={liveUrl} onChange={event => setLiveUrl(event.target.value)} className={inputClassName} />
+				<input
+					id='project-live'
+					type='url'
+					value={liveUrl}
+					onChange={event => setLiveUrl(event.target.value)}
+					className={inputClassName}
+				/>
+			</div>
+			<div className='flex items-center gap-2'>
+				<input
+					id='project-in-progress'
+					type='checkbox'
+					checked={inProgress}
+					onChange={event => setInProgress(event.target.checked)}
+					className='size-4 rounded border-panel-border bg-surface text-accent focus-visible:ring-2 focus-visible:ring-accent'
+				/>
+				<label htmlFor='project-in-progress' className='text-sm text-text-secondary'>
+					In progress?
+				</label>
 			</div>
 
 			{error ?
@@ -125,7 +163,10 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 					className='rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-soft disabled:opacity-50'>
 					{isSaving ? 'Saving…' : 'Save project'}
 				</button>
-				<button type='button' onClick={onCancel} className='rounded-md px-4 py-2 text-sm text-text-secondary hover:bg-panel-muted'>
+				<button
+					type='button'
+					onClick={onCancel}
+					className='rounded-md px-4 py-2 text-sm text-text-secondary hover:bg-panel-muted'>
 					Cancel
 				</button>
 			</div>

@@ -58,6 +58,7 @@ async function seed() {
 		stack: project.stack,
 		repo_url: project.repoUrl,
 		live_url: project.liveUrl ?? null,
+		in_progress: project.inProgress ?? false,
 		sort_order: index
 	}));
 
