@@ -18,7 +18,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 				<div className='grow'>
 					<p className='mt-3 text-sm leading-relaxed text-text-secondary'>{project.summary}</p>
 				</div>
-				<ul className='mt-4 flex flex-wrap gap-2'>
+				<ul className='flex flex-wrap gap-2 mt-4 mx-auto w-fit'>
 					{project.stack.map(key => {
 						const entry = getStackIcon(key);
 						const label = entry?.label ?? key;
@@ -29,15 +29,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
 								key={key}
 								title={label}
 								aria-label={label}
-								className='rounded-full bg-panel-muted px-2.5 py-1 text-text-secondary'>
+								className='px-2.5 py-1 text-text-secondary'>
 								{Icon ?
-									<Icon className='size-4' aria-hidden />
+									<Icon className='size-8' aria-hidden />
 								:	<span className='text-xs'>{key}</span>}
 							</li>
 						);
 					})}
 				</ul>
-				<div className='mt-5 flex items-center gap-4 text-sm'>
+				<div className='mt-5 mx-auto flex gap-4 text-sm'>
 					<a href={project.repoUrl} className='text-accent hover:text-accent-soft' target='_blank' rel='noreferrer'>
 						Repository
 					</a>
