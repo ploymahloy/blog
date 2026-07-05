@@ -20,7 +20,8 @@
     "react-dom": "^19.2.6",
     "react-icons": "^5.7.0",
     "react-markdown": "^10.1.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "trng-crypto": "^1.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

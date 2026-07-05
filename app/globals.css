@@ -13,6 +13,18 @@
 	--shadow-soft: 0 10px 30px rgb(0 0 0 / 28%);
 	--animate-page-enter: page-enter 0.5s ease-out;
 	--animate-page-exit: page-exit 0.35s ease-in;
+	--animate-bg-fade: bg-fade 15s ease-in infinite;
+
+	@keyframes bg-fade {
+		0%,
+		100% {
+			opacity: 0;
+		}
+
+		50% {
+			opacity: 0.45;
+		}
+	}
 
 	@keyframes page-enter {
 		from {
