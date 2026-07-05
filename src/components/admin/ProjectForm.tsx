@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { isValidSlug } from '@/lib/content';
+import { formatStackInput, parseStackInput } from '@/lib/stack-icons';
 import type { Project } from '@/types/content';
 
 const inputClassName =
@@ -17,7 +18,7 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 	const [id, setId] = useState(initial?.id ?? '');
 	const [title, setTitle] = useState(initial?.title ?? '');
 	const [summary, setSummary] = useState(initial?.summary ?? '');
-	const [stackText, setStackText] = useState(initial?.stack.join(', ') ?? '');
+	const [stackText, setStackText] = useState(initial ? formatStackInput(initial.stack) : '');
 	const [repoUrl, setRepoUrl] = useState(initial?.repoUrl ?? '');
 	const [liveUrl, setLiveUrl] = useState(initial?.liveUrl ?? '');
 	const [inProgress, setInProgress] = useState(initial?.inProgress ?? false);
@@ -34,10 +35,7 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 			return;
 		}
 
-		const stack = stackText
-			.split(',')
-			.map(item => item.trim())
-			.filter(Boolean);
+		const stack = parseStackInput(stackText);
 
 		if (!title.trim() || !summary.trim() || !repoUrl.trim() || stack.length === 0) {
 			setError('Fill in all required fields and at least one stack item.');
@@ -103,7 +101,7 @@ export function ProjectForm({ initial, isNew = false, onSubmit, onCancel }: Proj
 			</div>
 			<div>
 				<label htmlFor='project-stack' className='mb-1 block text-sm text-text-secondary'>
-					Stack (comma-separated)
+					Stack (comma-separated slugs, e.g. typescript, rust, docker)
 				</label>
 				<input
 					id='project-stack'

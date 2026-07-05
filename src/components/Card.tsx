@@ -1,4 +1,5 @@
 import { InProgressStamp } from '@/components/in-progress-stamp';
+import { getStackIcon } from '@/lib/stack-icons';
 import type { Project } from '@/types/content';
 
 interface ProjectCardProps {
@@ -18,11 +19,23 @@ export function ProjectCard({ project }: ProjectCardProps) {
 					<p className='mt-3 text-sm leading-relaxed text-text-secondary'>{project.summary}</p>
 				</div>
 				<ul className='mt-4 flex flex-wrap gap-2'>
-					{project.stack.map(tool => (
-						<li key={tool} className='rounded-full bg-panel-muted px-2.5 py-1 text-xs text-text-secondary'>
-							{tool}
-						</li>
-					))}
+					{project.stack.map(key => {
+						const entry = getStackIcon(key);
+						const label = entry?.label ?? key;
+						const Icon = entry?.icon;
+
+						return (
+							<li
+								key={key}
+								title={label}
+								aria-label={label}
+								className='rounded-full bg-panel-muted px-2.5 py-1 text-text-secondary'>
+								{Icon ?
+									<Icon className='size-4' aria-hidden />
+								:	<span className='text-xs'>{key}</span>}
+							</li>
+						);
+					})}
 				</ul>
 				<div className='mt-5 flex items-center gap-4 text-sm'>
 					<a href={project.repoUrl} className='text-accent hover:text-accent-soft' target='_blank' rel='noreferrer'>

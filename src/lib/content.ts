@@ -30,7 +30,7 @@ function mapProject(row: ProjectRow): Project {
 		id: row.id,
 		title: row.title,
 		summary: row.summary,
-		stack: row.stack,
+		stack: row.stack.map(item => item.trim().toLowerCase()),
 		repoUrl: row.repo_url,
 		liveUrl: row.live_url ?? undefined,
 		inProgress: row.in_progress ?? false
