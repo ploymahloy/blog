@@ -1,4 +1,3 @@
-import { InProgressStamp } from '@/components/in-progress-stamp';
 import { getStackIcon } from '@/lib/stack-icons';
 import type { Project } from '@/types/content';
 
@@ -48,7 +47,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
 					:	null}
 				</div>
 				{inProgress ?
-					<InProgressStamp id={project.id} />
+					<div className='absolute top-5 right-5'>
+						<p className='text-xs text-accent'>[Currently in development]</p>
+					</div>
 				:	null}
 			</article>
 		</div>
