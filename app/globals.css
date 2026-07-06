@@ -67,19 +67,6 @@
 	}
 }
 
-@media (max-width: 639px) {
-	@keyframes bg-fade {
-		0%,
-		100% {
-			opacity: 0;
-		}
-
-		50% {
-			opacity: 0.2;
-		}
-	}
-}
-
 @layer base {
 	html,
 	body {
