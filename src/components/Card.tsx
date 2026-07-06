@@ -12,7 +12,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 		<div
 			className='relative overflow-hidden rounded-xl'
 			aria-label={inProgress ? `${project.title} (in progress)` : undefined}>
-			<article className='relative flex h-full flex-col rounded-xl bg-panel p-6 shadow-soft transition-transform text-center duration-200 hover:-translate-y-0.5 sm:p-5'>
+			<article className='relative flex h-full flex-col rounded-xl bg-panel p-6 shadow-soft text-center sm:p-5'>
 				<h3 className='text-xl font-semibold text-text-primary'>{project.title}</h3>
 				<div className='grow'>
 					<p className='mt-3 text-sm leading-relaxed text-text-secondary'>{project.summary}</p>
