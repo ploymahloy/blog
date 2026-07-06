@@ -39,7 +39,7 @@ const linkClassName =
 
 export function SocialLinks({ className = '' }: SocialLinksProps) {
 	return (
-		<div className={`flex items-center justify-center gap-1 ${className}`.trim()}>
+		<div className={`flex items-center gap-2 ${className}`.trim()}>
 			{socialLinks.map(link => {
 				const Icon = iconByLabel[link.label];
 				return (
@@ -52,7 +52,7 @@ export function SocialLinks({ className = '' }: SocialLinksProps) {
 						className={linkClassName}>
 						{Icon ?
 							<Icon />
-						:	null}
+							: null}
 					</a>
 				);
 			})}

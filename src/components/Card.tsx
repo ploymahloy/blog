@@ -12,12 +12,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
 		<div
 			className='relative overflow-hidden rounded-xl'
 			aria-label={inProgress ? `${project.title} (in progress)` : undefined}>
-			<article className='relative flex h-full flex-col rounded-xl bg-panel p-5 shadow-soft transition-transform duration-200 hover:-translate-y-0.5'>
+			<article className='relative flex h-full flex-col rounded-xl bg-panel p-6 shadow-soft transition-transform duration-200 hover:-translate-y-0.5 sm:p-5'>
 				<h3 className='text-xl font-semibold text-text-primary'>{project.title}</h3>
 				<div className='grow'>
 					<p className='mt-3 text-sm leading-relaxed text-text-secondary'>{project.summary}</p>
 				</div>
-				<ul className='flex flex-wrap gap-2 mt-4 mx-auto w-fit'>
+				<ul className='mx-auto mt-5 flex w-fit flex-wrap gap-2.5'>
 					{project.stack.map(key => {
 						const entry = getStackIcon(key);
 						const label = entry?.label ?? key;
@@ -30,13 +30,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
 								aria-label={label}
 								className='px-2.5 py-1 text-text-secondary'>
 								{Icon ?
-									<Icon className='size-8' aria-hidden />
+									<Icon className='size-6 sm:size-8' aria-hidden />
 								:	<span className='text-xs'>{key}</span>}
 							</li>
 						);
 					})}
 				</ul>
-				<div className='mt-5 mx-auto flex gap-4 text-sm'>
+				<div className='mx-auto mt-6 flex gap-4 text-sm'>
 					<a href={project.repoUrl} className='text-accent hover:text-accent-soft' target='_blank' rel='noreferrer'>
 						Repository
 					</a>
@@ -47,8 +47,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
 					:	null}
 				</div>
 				{inProgress ?
-					<div className='absolute top-5 right-5'>
-						<p className='text-xs text-accent'>[Currently in development]</p>
+					<div className='absolute top-4 right-4 sm:top-5 sm:right-5'>
+						<p className='text-xs text-text-muted'>[Currently in development]</p>
 					</div>
 				:	null}
 			</article>
