@@ -8,7 +8,7 @@ interface PostArticleProps {
 
 export function PostArticle({ post }: PostArticleProps) {
 	return (
-		<article className='rounded-xl bg-panel p-6 shadow-soft'>
+		<article className='rounded-xl border border-panel-border bg-panel p-6 shadow-soft'>
 			<header>
 				<h1 className='text-3xl font-semibold text-text-primary'>{post.title}</h1>
 				<p className='mt-2 mb-4 text-sm text-text-muted'>

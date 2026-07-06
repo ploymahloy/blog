@@ -47,7 +47,7 @@ export function BlogList({ posts }: BlogListProps) {
 		<section className='mx-auto w-full max-w-6xl px-4 py-10 sm:px-6'>
 			<p className='text-sm uppercase tracking-wide text-accent text-center md:text-left'>Engineering Blog</p>
 			<h1 className='mt-2 text-3xl font-semibold text-text-primary sm:text-4xl text-center md:text-left'>Posts</h1>
-			<div className='mt-8 rounded-xl bg-panel p-4'>
+			<div className='mt-8 rounded-xl border border-panel-border bg-panel p-4'>
 				<label htmlFor='blog-search' className='mb-2 block text-sm text-text-secondary'>
 					Search by title or tag
 				</label>
@@ -73,7 +73,7 @@ export function BlogList({ posts }: BlogListProps) {
 						<Link
 							key={post.id}
 							href={`/blog/${post.id}`}
-							className='mb-6 block break-inside-avoid rounded-xl bg-panel p-6 shadow-soft transition-colors hover:bg-panel-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'>
+							className='mb-6 block break-inside-avoid rounded-xl border border-panel-border bg-panel p-6 shadow-soft transition-colors hover:bg-panel-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'>
 							<article>
 								<header>
 									<h2 className='text-2xl font-semibold text-text-primary'>{post.title}</h2>
