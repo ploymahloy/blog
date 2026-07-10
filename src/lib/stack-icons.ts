@@ -14,6 +14,7 @@ import {
 	SiReact,
 	SiRedis,
 	SiSqlite,
+	SiSvelte,
 	SiTypescript
 } from 'react-icons/si';
 
@@ -39,6 +40,7 @@ export const STACK_ICONS = {
 	redis: { icon: SiRedis, label: 'Redis' },
 	rust: { icon: FaRust, label: 'Rust' },
 	sqlite: { icon: SiSqlite, label: 'SQLite' },
+	svelte: { icon: SiSvelte, label: 'Svelte' },
 	typescript: { icon: SiTypescript, label: 'TypeScript' }
 } as const satisfies Record<string, StackIcon>;
 

@@ -17,7 +17,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 				<div className='grow'>
 					<p className='mt-3 text-sm leading-relaxed text-text-secondary'>{project.summary}</p>
 				</div>
-				<ul className='mx-auto mt-5 flex w-fit flex-wrap gap-2.5'>
+				<ul className='mx-auto mt-5 flex w-fit flex-wrap justify-center gap-2.5'>
 					{project.stack.map(key => {
 						const entry = getStackIcon(key);
 						const label = entry?.label ?? key;
