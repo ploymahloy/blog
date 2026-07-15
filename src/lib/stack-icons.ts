@@ -10,11 +10,14 @@ import {
 	SiNpm,
 	SiOpentelemetry,
 	SiPostcss,
+	SiPostgresql,
+	SiPrisma,
 	SiPython,
 	SiReact,
 	SiRedis,
 	SiSqlite,
 	SiSvelte,
+	SiTailwindcss,
 	SiTypescript
 } from 'react-icons/si';
 
@@ -34,6 +37,8 @@ export const STACK_ICONS = {
 	npm: { icon: SiNpm, label: 'npm' },
 	opentelemetry: { icon: SiOpentelemetry, label: 'OpenTelemetry' },
 	postcss: { icon: SiPostcss, label: 'PostCSS' },
+	postgres: { icon: SiPostgresql, label: 'PostgreSQL' },
+	prisma: { icon: SiPrisma, label: 'Prisma' },
 	python: { icon: SiPython, label: 'Python' },
 	raspberrypi: { icon: FaRaspberryPi, label: 'Raspberry Pi' },
 	react: { icon: SiReact, label: 'React' },
@@ -41,6 +46,7 @@ export const STACK_ICONS = {
 	rust: { icon: FaRust, label: 'Rust' },
 	sqlite: { icon: SiSqlite, label: 'SQLite' },
 	svelte: { icon: SiSvelte, label: 'Svelte' },
+	tailwind: { icon: SiTailwindcss, label: 'Tailwind CSS' },
 	typescript: { icon: SiTypescript, label: 'TypeScript' }
 } as const satisfies Record<string, StackIcon>;
 
